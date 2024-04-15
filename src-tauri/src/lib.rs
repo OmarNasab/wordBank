@@ -1,6 +1,13 @@
+pub mod model;
+pub mod schema;
+pub mod commands;
+
+
 use dotenvy::dotenv;
 use std::env;
 use diesel::{Connection, SqliteConnection};
+
+
 
 pub fn establish_connection() -> SqliteConnection {
     dotenv().ok();

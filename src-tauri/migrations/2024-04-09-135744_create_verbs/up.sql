@@ -1,7 +1,7 @@
 -- Your SQL goes here
 CREATE TABLE verbs
 (
-    id           INTEGER PRIMARY KEY,
+    id           INTEGER PRIMARY KEY NOT NULL,
     verb         VARCHAR NOT NULL,
     past_simple  VARCHAR NOT NULL,
     past_perfect VARCHAR NOT NULL,
