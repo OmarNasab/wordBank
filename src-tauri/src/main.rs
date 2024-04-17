@@ -22,21 +22,25 @@ use app::__cmd__add_prefix;
 use app::__cmd__get_prefixes;
 use app::commands::search::*;
 use app::__cmd__search_all;
-use std::error::Error;
 use diesel::sqlite::Sqlite;
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 
-pub fn run_migrations(connection: &mut impl MigrationHarness<Sqlite>) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
+pub fn run_migrations(connection: &mut impl MigrationHarness<Sqlite>) {
 
-    connection.run_pending_migrations(MIGRATIONS)?;
-    Ok(())
+    connection.run_pending_migrations(MIGRATIONS).expect("error migration failed");
+
 }
 fn main() {
-        let connection= &mut establish_connection();
-    run_migrations(connection);
+
     tauri::Builder::default()
+        .setup(|_app| {
+            let connection= &mut establish_connection();
+            run_migrations(connection);
+            Ok(())
+        }
+        )
         .invoke_handler(tauri::generate_handler![
             add_verb,
             get_verbs,
