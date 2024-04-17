@@ -1,5 +1,9 @@
 <script setup>
 
+function submit(){
+  console.log("")
+}
+
 </script>
 
 <template>

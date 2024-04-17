@@ -1,5 +1,14 @@
 <script setup>
 
+import {ref} from "vue";
+import {invoke} from "@tauri-apps/api";
+
+const verbs=ref([])
+
+invoke("get_verbs").then((res)=>{
+  verbs.value=res
+})
+
 </script>
 
 <template>
@@ -27,21 +36,21 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+      <tr v-for="verb in verbs" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          Apple MacBook Pro 17"
+          {{verb.verb}}
         </th>
         <td class="px-6 py-4">
-          Silver
+          {{verb.past_simple}}
         </td>
         <td class="px-6 py-4">
-          Laptop
+          {{verb.past_perfect}}
         </td>
         <td class="px-6 py-4">
-          $2999
+          {{verb.definition}}
         </td>
         <td class="px-6 py-4">
-          $2999
+          <router-link :to="'/verbs/'+verb.id">View</router-link>
         </td>
       </tr>
       </tbody>

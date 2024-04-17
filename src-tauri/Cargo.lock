@@ -64,11 +64,12 @@ checksum = "59d2a3357dde987206219e78ecfbbb6e8dad06cbb65292758d3270e6254f7355"
 
 [[package]]
 name = "app"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "diesel",
  "dirs",
  "dotenvy",
+ "libsqlite3-sys",
  "serde",
  "serde_json",
  "tauri",
@@ -1491,6 +1492,7 @@ version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c10584274047cb335c23d3e61bcef8e323adae7c5c8c760540f73610177fc3f"
 dependencies = [
+ "cc",
  "pkg-config",
  "vcpkg",
 ]

@@ -8,6 +8,8 @@ import Propositions from "./pages/Propositions.vue";
 import Phrases from "./pages/Phrases.vue";
 import AddWord from "./pages/AddWord.vue";
 import MedicalPhrases from "./pages/MedicalPhrases.vue";
+import Verb from "./pages/Verb.vue";
+import SearchPage from "./pages/SearchPage.vue";
 
 const routes=[
     {path:"/noun",component:Nouns},
@@ -15,7 +17,9 @@ const routes=[
     {path:"/proposition",component:Propositions},
     {path:"/phrase",component:Phrases},
     {path:"/add-word",component: AddWord},
-    {path:"/medical-phrases",component: MedicalPhrases}
+    {path:"/medical-phrases",component: MedicalPhrases},
+    {path:"/verbs/:id",component: Verb},
+    {path:"/search/:query",component: SearchPage},
 ];
 
 const router = createRouter({
