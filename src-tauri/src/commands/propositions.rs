@@ -18,9 +18,11 @@ pub fn add_proposition(new_proposition: NewProposition) -> Proposition{
 #[tauri::command]
 pub fn get_propositions(verb: i32) -> Vec<Proposition>{
     let connection = &mut establish_connection();
+    use crate::schema::propositions;
     let results = propositions
         .filter(verb_id.eq(verb))
         .select(Proposition::as_select())
+        .order(propositions::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -34,6 +36,7 @@ pub fn search_propositions(query: String) -> Vec<Proposition> {
             propositions::proposition.like(format!("%{}%", query.clone()))
                 .or(propositions::definition.like(format!("%{}%", query)))
         )
+        .order(propositions::id.desc())
         .load::<Proposition>(connection)
         .expect("Error loading propositions");
     results

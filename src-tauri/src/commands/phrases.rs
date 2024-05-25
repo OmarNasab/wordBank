@@ -17,8 +17,10 @@ pub fn add_phrase(new_phrase: NewPhrase) -> Phrase{
 #[tauri::command]
 pub fn get_phrases() -> Vec<Phrase>{
     let connection = &mut establish_connection();
+    use crate::schema::phrases;
     let results = phrases
         .select(Phrase::as_select())
+        .order(phrases::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -34,6 +36,7 @@ pub fn search_phrases(query: String) -> Vec<NewPhrase> {
                 .or(phrases::note.like(format!("%{}%", query)))
         )
         .select(NewPhrase::as_select())
+        .order(phrases::id.desc())
         .load::<NewPhrase>(connection)
         .expect("Error loading phrases");
     results

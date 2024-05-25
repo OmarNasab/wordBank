@@ -18,10 +18,11 @@ pub fn add_prefix(new_prefix: NewPrefix) -> Prefix{
 #[tauri::command]
 pub fn get_prefixes(verb: i32) -> Vec<Prefix>{
     let connection = &mut establish_connection();
-
+    use crate::schema::prefixes;
     let results = prefixes
         .filter(verb_id.eq(verb))
         .select(Prefix::as_select())
+        .order(prefixes::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -35,6 +36,7 @@ pub fn search_prefixes(query: String) -> Vec<Prefix> {
             prefixes::prefix.like(format!("%{}%", query.clone()))
                 .or(prefixes::definition.like(format!("%{}%", query)))
         )
+        .order(prefixes::id.desc())
         .load::<Prefix>(connection)
         .expect("Error loading prefixes");
     results

@@ -17,8 +17,10 @@ pub fn add_verb(new_verb: NewVerb) -> Verb{
 #[tauri::command]
 pub fn get_verbs() -> Vec<Verb>{
     let connection = &mut establish_connection();
+    use crate::schema::verbs;
     let results = verbs
         .select(Verb::as_select())
+        .order(verbs::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -47,6 +49,7 @@ pub fn search_verbs(query: String) -> Vec<NewVerb> {
                 .or(verbs::note.like(format!("%{}%", query)))
         )
         .select(NewVerb::as_select())
+        .order(verbs::id.desc())
         .load::<NewVerb>(connection)
         .expect("Error loading verbs");
     results

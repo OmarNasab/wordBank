@@ -16,8 +16,10 @@ pub fn add_medical_phrase(new_medical_phrase: NewMedicalPhrase) -> MedicalPhrase
 #[tauri::command]
 pub fn get_medical_phrases() -> Vec<MedicalPhrase>{
     let connection = &mut establish_connection();
+    use crate::schema::medical_phrases;
     let results = medical_phrases
         .select(MedicalPhrase::as_select())
+        .order(medical_phrases::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -33,6 +35,7 @@ pub fn search_medical_phrases(query: String) -> Vec<NewMedicalPhrase> {
                 .or(medical_phrases::note.like(format!("%{}%", query)))
         )
         .select(NewMedicalPhrase::as_select())
+        .order(medical_phrases::id.desc())
         .load::<NewMedicalPhrase>(connection)
         .expect("Error loading medical phrases");
     results

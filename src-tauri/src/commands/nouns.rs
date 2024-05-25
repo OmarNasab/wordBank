@@ -17,8 +17,10 @@ pub fn add_noun(new_noun: NewNoun) -> Noun{
 #[tauri::command]
 pub fn get_nouns() -> Vec<Noun>{
     let connection = &mut establish_connection();
+    use crate::schema::nouns;
     let results = nouns
         .select(Noun::as_select())
+        .order(nouns::id.desc())
         .load(connection)
         .expect("Error loading posts");
     results
@@ -35,6 +37,7 @@ pub fn search_nouns(query: String) -> Vec<NewNoun> {
                 .or(nouns::plural.like(format!("%{}%", query)))
         )
         .select(NewNoun::as_select())
+        .order(nouns::id.desc())
         .load::<NewNoun>(connection)
         .expect("Error loading nouns");
     results
